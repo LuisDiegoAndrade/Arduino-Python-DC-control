@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+
+    <div id="console"> </div>
+
+
+
+    <script type="text/javascript">
+
+    (async function() {
+      'use strict';
+      //start serial communication with Arduino
+      let start = await fetch("/enableserial", {method: "post"});
+    }());
+
+      let out = document.getElementById("console");
+
+      function addOutput(textContent, consoleDiv) {
+
+        consoleDiv.innerHTML = textContent;
+        /*let p = document.createElement("p");
+        p.textContent = textContent;
+        consoleDiv.appendChild(p);*/
+      }
+
+      async function getOutput() {
+        let res = await fetch("/serialdata");
+        let data = await res.text();
+        addOutput(data, out);
+      }
+
+      window.setInterval(getOutput, 100);
+
+    </script>
+
+  </body>
+</html>
